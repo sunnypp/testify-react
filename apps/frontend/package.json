@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && mkdir -p build/images && cp -a src/images/ build/images/ && cp now.json build && cd build && now alias $(now) testify",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
