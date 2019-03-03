@@ -4,13 +4,14 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import loadRows from '../utils/GoogleSheet.js';
+import { isEmpty } from '@testify-react/validator';
 
-
-export default ({match}) => {
-  const [ sheet, setSheet ] = useState( match ? match.sheet : '12vrGNS-M8cwCXOPhhC64fORW-xRfVfmGsxW7Q3EZvpk');
-  const [ page, setPage ] = useState( match ? match.page : 4 );
+export default props => {
+  const [ sheet, setSheet ] = useState('12vrGNS-M8cwCXOPhhC64fORW-xRfVfmGsxW7Q3EZvpk');
+  const [ page, setPage ] = useState('1');
   const [ questions, setQuestions ] = useState([]);
   const [ answering, setAnswering ] = useState([]);
+  const [ showAnswer, setShowAnswer ] = useState(false);
 
   const fetchQuestion = qs => {
     if ( !qs.length ) {
@@ -31,9 +32,13 @@ export default ({match}) => {
   const loadQuestions = async ( sheet, page ) => {
     const fetchedQuestions = await loadRows( sheet, page );
     fetchQuestion(fetchedQuestions);
+    setShowAnswer(false);
   };
 
   useEffect( _ => {
+    if ( isEmpty(sheet) || isEmpty(page) ) {
+      return;
+    }
     loadQuestions( sheet, page );
   }, [ sheet, page ] );
 
@@ -41,9 +46,10 @@ export default ({match}) => {
     <>
       <input onChange={ e => setSheet(e.target.value) } value={sheet}/>
       <input onChange={ e => setPage(e.target.value) } value={page}/>
-      <button onClick={ _ => fetchQuestion(questions) }>Next</button>
       <div>{ !!answering.length && answering[0].question }</div>
-      <div>{ !!answering.length && answering[0].answer }</div>
+      { showAnswer && <div>{ !!answering.length && answering[0].answer }</div> }
+      <button onClick={ _ => setShowAnswer(true) } disabled={showAnswer}>Show Answer</button>
+      <button onClick={ _ => { fetchQuestion(questions); setShowAnswer(false); } }>Next</button>
     </>
   );
 }
