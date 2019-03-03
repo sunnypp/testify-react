@@ -96,8 +96,11 @@ const QuestionArea = styled.section`
 
   display: flex;
   flex-direction: column;
-  // align-items: center;
-  // justify-content: center;
+  
+  position: relative;
+
+  width: 100%;
+  max-width: 90vw;
 
   color: white;
   flex: 1;
@@ -107,6 +110,16 @@ const QuestionArea = styled.section`
 
 const Center = styled.div`
   margin: auto;
+`
+const Edit = styled.a`
+  ${fontSize}
+
+  position: absolute;
+  top: 30px;
+  right: 30px;
+
+  color: #AAA;
+  font-style: italic;
 `
 
 export default props => {
@@ -158,6 +171,7 @@ export default props => {
         </Flex>
       </Header>
       <QuestionArea p={[3,4]} fontSize={[4,5,6]}>
+        <Edit fontSize={[2,3]} href={`https://docs.google.com/spreadsheets/d/${sheet}/edit#gid=0`} target='_blank'>Edit Sheet</Edit>
         <Center>
           <Text my={3}>{ !!answering.length && <Markdown source={ answering[0].question }/> }</Text>
           <Text>{ showAnswer && !!answering.length && <Markdown source={ answering[0].answer }/> }</Text> 
