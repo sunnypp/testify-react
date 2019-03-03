@@ -11,6 +11,7 @@ import {
 } from 'styled-system';
 import loadRows from '../utils/GoogleSheet.js';
 import { isEmpty } from '@testify-react/validator';
+import Markdown from 'react-markdown';
 
 const Header = styled.header`
   ${space}
@@ -158,8 +159,8 @@ export default props => {
       </Header>
       <QuestionArea p={[3,4]} fontSize={[4,5,6]}>
         <Center>
-          <Text my={3}>{ !!answering.length && answering[0].question }</Text>
-          <Text>{ showAnswer && !!answering.length && answering[0].answer }</Text> 
+          <Text my={3}>{ !!answering.length && <Markdown source={ answering[0].question }/> }</Text>
+          <Text>{ showAnswer && !!answering.length && <Markdown source={ answering[0].answer }/> }</Text> 
         </Center>
       </QuestionArea>
       <Button fontSize={[3,4,5]} my={[1,2]} p={[3,4]} onClick={ _ => setShowAnswer(true) } disabled={showAnswer}>Show Answer</Button>
